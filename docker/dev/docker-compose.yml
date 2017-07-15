@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+
+  telephone-bridge:
+    build: .
+    image: dev-home-telephone
+    container_name: home-telephone
+    command: /usr/local/src/telephone/docker/run-app.sh
+    environment:
+      MQTT_URI: tcp://automation.home.lan:1883
+      MQTT_CLIENT_ID: home-telephone
+      MYSQL_URI: jdbc:mysql://automation.home.lan:3306/home_automation
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
+    volumes:
+      - ../../:/usr/local/src/telephone
+    logging:
+      driver: gelf
+      options:
+        gelf-address: udp://automation.home.lan:12201
+        tag: telephone
