@@ -22,3 +22,8 @@ services:
       options:
         gelf-address: udp://automation.home.lan:12201
         tag: telephone
+
+networks:
+  default:
+    external:
+      name: home-automation-bridge
